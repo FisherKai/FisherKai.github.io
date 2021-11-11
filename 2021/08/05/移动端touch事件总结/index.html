@@ -24,7 +24,7 @@
 <meta property="og:locale">
 <meta property="og:image" content="http://example.com/null">
 <meta property="article:published_time" content="2021-08-05T15:29:01.000Z">
-<meta property="article:modified_time" content="2021-11-11T02:57:17.347Z">
+<meta property="article:modified_time" content="2021-11-11T05:46:42.904Z">
 <meta property="article:author" content="FisherKai">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/null">
@@ -165,7 +165,7 @@
         </header>
         <div class="kratos-post-content">
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
-                本文最后编辑于 <time datetime="1636599437347"></time> 前，其中的内容可能需要更新。
+                本文最后编辑于 <time datetime="1636609602904"></time> 前，其中的内容可能需要更新。
             </div>
             
             <hr />
@@ -176,8 +176,8 @@
 </li>
 <li><p>touch事件的穿透问题</p>
 <ul>
-<li><p>场景：当有蒙层的时候，蒙层为渲染节点的最外层的兄弟节点，触发touchstart事件后，由于移动端的300ms的延迟，会导致300ms之后触发button的onclick事件、ab标签的跳转的、input的focus事件等</p>
-<!-- ![示例](http://github.com/FisherKai/MyGitHubBlog/blob/main/source/_posts/img/touch.png) --></li>
+<li><p>场景：当有蒙层的时候，蒙层为渲染节点的最外层的兄弟节点，触发touchstart事件后，由于移动端的300ms的延迟，会导致300ms之后触发button的onclick事件、ab标签的跳转的、input的focus事件等<br><img src="/2021/08/05/%E7%A7%BB%E5%8A%A8%E7%AB%AFtouch%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BB%93/touch.png" alt="移动端touch事件总结"></p>
+</li>
 <li><p>解决办法</p>
 <ol>
 <li>封装tap事件，阻止掉事件的默认行为 e.preventDefault()</li>
