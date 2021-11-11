@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="">
+  <title>Tree shaking | FisherKai</title>
+  <meta name="author" content="FisherKai" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="" />
+  
+  <meta name="description" content="当 Javascript 项目达到一定体积时，将代码分成模块会更易于管理。但是，当这样做时，我们最终可能会导入实际上未使用的代码。Tree Shaking 是一种通过消除最终文件中未使用的代码来优化体积的方法。我们来举个例子，下面是一个简单的 Javascript 文件，命名为 mathUtils.js，主要实现了基础的数学运算。 12345678910111213141516export fun">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tree shaking">
+<meta property="og:url" content="http://example.com/2021/08/23/Tree-shaking/index.html">
+<meta property="og:site_name" content="FisherKai">
+<meta property="og:description" content="当 Javascript 项目达到一定体积时，将代码分成模块会更易于管理。但是，当这样做时，我们最终可能会导入实际上未使用的代码。Tree Shaking 是一种通过消除最终文件中未使用的代码来优化体积的方法。我们来举个例子，下面是一个简单的 Javascript 文件，命名为 mathUtils.js，主要实现了基础的数学运算。 12345678910111213141516export fun">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/null">
+<meta property="article:published_time" content="2021-08-23T07:02:44.000Z">
+<meta property="article:modified_time" content="2021-11-11T02:57:17.342Z">
+<meta property="article:author" content="FisherKai">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/null">
+<meta name="twitter:site" content="@null">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" type="text/css" media="all">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/archives/"><i class="fa fa-file"></i>档案馆</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/friends/"></a></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>链接</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://candinya.com"></a></li>
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://github.com/Candinya/Kratos-Rebirth"></a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">FisherKai</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>FisherKai</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article>
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center">Tree shaking</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><i class="fa fa-calendar"></i> 2021-08-23</li>
+                <li><i class="fa fa-user"></i> 作者 FisherKai</li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~4.51K
+                    
+                    字
+                </li>
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                本文最后编辑于 <time datetime="1636599437342"></time> 前，其中的内容可能需要更新。
+            </div>
+            
+            <hr />
+            <p>当 Javascript 项目达到一定体积时，将代码分成模块会更易于管理。但是，当这样做时，我们最终可能会导入实际上未使用的代码。Tree Shaking 是一种通过消除最终文件中未使用的代码来优化体积的方法。<br>我们来举个例子，下面是一个简单的 Javascript 文件，命名为 mathUtils.js，主要实现了基础的数学运算。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">export function add(a, b) &#123;</span><br><span class="line">    console.log(&quot;add&quot;);</span><br><span class="line">    return a + b;</span><br><span class="line">&#125;</span><br><span class="line">export function minus(a, b) &#123;</span><br><span class="line">    console.log(&quot;minus&quot;);</span><br><span class="line">    return a - b;</span><br><span class="line">&#125;</span><br><span class="line">export function multiply(a, b) &#123;</span><br><span class="line">    console.log(&quot;multiply&quot;);</span><br><span class="line">    return a * b;</span><br><span class="line">&#125;</span><br><span class="line">export function divide(a, b) &#123;</span><br><span class="line">    console.log(&quot;divide&quot;);</span><br><span class="line">    return a / b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 index.js 里，我们通过如下方式调用该文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import &#123; add &#125; from &quot;./mathUtils&quot;;</span><br><span class="line">add(1, 2);</span><br></pre></td></tr></table></figure>
+<p>假设我们正在使用像 webpack 这样的工具来打包 mathUtils.js，即使仅导入并使用了add()功能，我们也会看到文件中的所有功能都包含在最终输出中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/***/ &quot;./src/mathUtils.js&quot;:</span><br><span class="line">/*!**************************!*\</span><br><span class="line">  !*** ./src/mathUtils.js ***!</span><br><span class="line">  \**************************/</span><br><span class="line">/*! exports provided: add, minus, multiply, divide */</span><br><span class="line">/***/ (function(module, __webpack_exports__, __webpack_require__) &#123;</span><br><span class="line">&quot;use strict&quot;;</span><br><span class="line">eval(&quot;__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \&quot;add\&quot;, function() &#123; return add; &#125;);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \&quot;minus\&quot;, function() &#123; return minus; &#125;);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \&quot;multiply\&quot;, function() &#123; return multiply; &#125;);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \&quot;divide\&quot;, function() &#123; return divide; &#125;);\nfunction add(a, b) &#123;\n    console.log(\&quot;add\&quot;);\n    return a + b;\n&#125;\n\nfunction minus(a, b) &#123;\n    console.log(\&quot;minus\&quot;);\n    return a - b;\n&#125;\n\nfunction multiply(a, b) &#123;\n    console.log(\&quot;multiply\&quot;);\n    return a * b;\n&#125;\n\nfunction divide(a, b) &#123;\n    console.log(\&quot;divide\&quot;);\n    return a / b;\n&#125;\n\n\n//# sourceURL=webpack:///./src/mathUtils.js?&quot;);</span><br><span class="line">/***/ &#125;)</span><br></pre></td></tr></table></figure>
+<p>Tree Shaking 是如何工作的<br>虽然 Tree Shaking 的概念早在1990年代就已经被提出。<br>Dead code elimination in dynamic languages is a much harder problem than in static languages. The idea of a “treeshaker” originated in LISP in the 1990s.—— wikipedia<br>但当真正作用到 Javascript 中，是在 ES6 模块规范被提出之后，因为只有模块是通过 static 方式引用时，Tree Shaking 才会起作用。<br>在 ES6 模块规范之前，我们使用require()语法的 CommonJS 模块规范。这些模块是 dynamic 动态加载的，这意味着我们可以根据代码中的条件导入新模块。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var myDynamicModule;</span><br><span class="line">if (condition) &#123;</span><br><span class="line">    myDynamicModule = require(&quot;foo&quot;);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    myDynamicModule = require(&quot;bar&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>CommonJS 模块的这种 dynamic 性质意味着无法应用 Tree Shaking，因为在实际运行代码之前无法确定需要哪些模块。<br>在 ES6 中，引入了模块的新语法，这是 static 的。使用import语法，我们不再能够动态导入模块。<br>如下所示的代码是不被允许的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if (condition) &#123;</span><br><span class="line">    import foo from &quot;foo&quot;;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    import bar from &quot;bar&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>相反，我们必须在任何条件之外定义全局范围内的所有导入。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import foo from &quot;foo&quot;;</span><br><span class="line">import bar from &quot;bar&quot;;</span><br><span class="line">if (condition) &#123;</span><br><span class="line">    // do stuff with foo</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    // do stuff with bar</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>除其他好处外，这种新语法还可以有效地 Tree Shaking，因为可以确定导入后使用的任何代码，而无需先运行这些代码。<br>Tree Shaking 究竟做了些什么<br>Tree Shaking 在 Webpack 中的实现，是用来尽可能的删除没有被使用过的代码，一些被 import 了但其实没有被使用的代码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import &#123; add, multiply &#125; from &quot;./mathUtils&quot;;</span><br><span class="line">add(1, 2);</span><br></pre></td></tr></table></figure>
+<p>在上面的示例中，multiply()函数从未使用过，将从最终的打包文件中删除。<br>甚至从从未访问过的导入对象中删除特定属性。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">myInfo.js</span><br><span class="line">export const myInfo = &#123;</span><br><span class="line">    name: &quot;Ire Aderinokun&quot;,</span><br><span class="line">    birthday: &quot;2 March&quot;</span><br><span class="line">&#125;</span><br><span class="line">index.js</span><br><span class="line">import &#123; myInfo &#125; from &quot;./myInfo.js&quot;;</span><br><span class="line">console.log(myInfo.name);</span><br></pre></td></tr></table></figure>
+<p>在上面的示例中，birthday属性不会被输出到最终打包文件中，因为从未实际使用过。<br>但是，Tree Shaking 并不能消除 所有 未使用的代码。消除和不消除的细节不在本文讨论范围之内，但应注意的是，使用 Tree Shaking 并不能完全解决未使用代码的问题。<br>副作用<br>一个副作用是：有一些代码，是在 import 时执行了一些行为，这些行为不一定和任何导出相关。例如 polyfill ，Polyfills 通常是在项目中全局引用，而不是在 index.js 中使用导入的方式引用。<br>Tree Shaking 并不能自动判断哪些脚本是副作用，因此手动指定它们非常重要。<br>如何使用<br>Tree Shaking 通常是和打包工具配合使用，例如 Webpack，只需在配置文件中设置mode即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">webpack.production.config.js</span><br><span class="line">module.exports = &#123;</span><br><span class="line">    ...,</span><br><span class="line">    mode: &quot;production&quot;,</span><br><span class="line">    ...,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>要将某些文件标记为副作用，我们需要将它们添加到package.json文件中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    ...,</span><br><span class="line">    &quot;sideEffects&quot;: [</span><br><span class="line">        &quot;./src/polyfill.js&quot;</span><br><span class="line">    ],</span><br><span class="line">    ...,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>删除代码的原理：webpack基于ES6提供的模块系统，对代码的依赖树进行静态分析，把import &amp; export标记为3类：<br>• 所有import标记为/* harmony import <em>/<br>• 被使用过的export标记为/harmony export([type])/，其中[type]和webpack内部有关，可能是binding，immutable等；<br>• 没有被使用的export标记为/</em> unused harmony export [FuncName] */，其中[FuncName]为export的方法名，之后使用Uglifyjs（或者其他类似的工具）进行代码精简，把没用的都删除。</p>
+
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "http://example.com/2021/08/23/Tree-shaking/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "http://example.com/2021/08/23/Tree-shaking/";
+            const title         = "「Tree shaking」";
+            const excerpt       = `当 Javascript 项目达到一定体积时，将代码分成模块会更易于管理。但是，当这样做时，我们最终可能会导入实际上未使用的代码。Tree Shaking 是一种通过消除最终文件中未使用的代码来优化体积的方法。我们来举个例子，下面是一...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    
+                </div>
+                <div class="pull-date">
+                <span>最后编辑：2021-11-11</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" Javascript垃圾回收机制" href="/2021/08/06/Javascript垃圾回收机制/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 移动端软键盘弹起遮挡输入框问题的解决方案" href="/2021/09/26/移动端软键盘弹起遮挡输入框问题的解决方案/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.svg" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center"></p>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                
+
+            
+                
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2021/10/25/%E7%90%86%E8%A7%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/"><i class="fa  fa-book"></i> 理解浏览器缓存机制</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/09/26/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E8%BD%AF%E9%94%AE%E7%9B%98%E5%BC%B9%E8%B5%B7%E9%81%AE%E6%8C%A1%E8%BE%93%E5%85%A5%E6%A1%86%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"><i class="fa  fa-book"></i> 移动端软键盘弹起遮挡输入框问题的解决方案</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/08/23/Tree-shaking/"><i class="fa  fa-book"></i> Tree shaking</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/08/06/Javascript%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/"><i class="fa  fa-book"></i> Javascript垃圾回收机制</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/08/05/%E7%A7%BB%E5%8A%A8%E7%AB%AFtouch%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BB%93/"><i class="fa  fa-book"></i> 移动端touch事件总结</a>
+            
+          
+        
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        
+                        <li><a target="_blank" rel="nofollow" href="https://t.me/CandyUnion"><i class="fa fa-telegram"></i></a></li>
+                        
+                        
+                        
+                        <li><a target="_blank" rel="me" href="https://nya.one/@Candinya"><i class="fa fa fa-share-alt-square"></i></a></li>
+                        <li><a target="_blank" rel="nofollow" href="https://github.com/Candinya"><i class="fa fa-github"></i></a></li>
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2021 FisherKai 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by FisherKai.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://github.io" target="_blank">Github Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<script>const notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));</script>
+
+<script async src="/js/candy.min.js"></script>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+    <meting-js
+        server="netease"
+        type="playlist"
+        id="3204190542"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
