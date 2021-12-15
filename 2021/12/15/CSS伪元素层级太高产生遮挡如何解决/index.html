@@ -4,7 +4,7 @@
   <!-- 元数据 -->
   <meta charset="utf-8">
   <link rel="icon" href="">
-  <title>移动端软键盘弹起遮挡输入框问题的解决方案 | FisherKai</title>
+  <title>CSS伪元素层级太高产生遮挡如何解决 | FisherKai</title>
   <meta name="author" content="FisherKai" />
   <meta http-equiv="Cache-Control" content="no-transform" />
   <meta http-equiv="Cache-Control" content="no-siteapp" />
@@ -15,16 +15,16 @@
   
     <meta name="keywords" content="" />
   
-  <meta name="description" content="title: 移动端软键盘弹起遮挡输入框问题的解决方案date: 2021-09-26 23:15:11tags:   背景原生app与H5页面混合开发时，input输入框唤起软键盘时，输入框被遮挡，分为两种情况：  客户端设置了windowSoftInputMode &#x3D;”adjustResize”属性，软键盘会将webview向上抬起，偶现input框被遮挡客户端未设置windowSoftIn">
+  <meta name="description" content="​        最近在项目开发中遇到CSS伪元素产生遮挡的问题，总结一下如何解决的。  产生场景      如图所示，背景为before伪元素生成，进度条用本身元素，通过控制宽度来改变进度。   灰色的层级（伪元素生成）会覆盖在彩色层级（本身元素）之上。   可以通过  设置index123::before&amp;#123;	z-index:-1&amp;#125; 设置transform123456#tar">
 <meta property="og:type" content="article">
-<meta property="og:title" content="移动端软键盘弹起遮挡输入框问题的解决方案">
-<meta property="og:url" content="http://example.com/2021/09/26/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E8%BD%AF%E9%94%AE%E7%9B%98%E5%BC%B9%E8%B5%B7%E9%81%AE%E6%8C%A1%E8%BE%93%E5%85%A5%E6%A1%86%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/index.html">
+<meta property="og:title" content="CSS伪元素层级太高产生遮挡如何解决">
+<meta property="og:url" content="http://example.com/2021/12/15/CSS%E4%BC%AA%E5%85%83%E7%B4%A0%E5%B1%82%E7%BA%A7%E5%A4%AA%E9%AB%98%E4%BA%A7%E7%94%9F%E9%81%AE%E6%8C%A1%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3/index.html">
 <meta property="og:site_name" content="FisherKai">
-<meta property="og:description" content="title: 移动端软键盘弹起遮挡输入框问题的解决方案date: 2021-09-26 23:15:11tags:   背景原生app与H5页面混合开发时，input输入框唤起软键盘时，输入框被遮挡，分为两种情况：  客户端设置了windowSoftInputMode &#x3D;”adjustResize”属性，软键盘会将webview向上抬起，偶现input框被遮挡客户端未设置windowSoftIn">
+<meta property="og:description" content="​        最近在项目开发中遇到CSS伪元素产生遮挡的问题，总结一下如何解决的。  产生场景      如图所示，背景为before伪元素生成，进度条用本身元素，通过控制宽度来改变进度。   灰色的层级（伪元素生成）会覆盖在彩色层级（本身元素）之上。   可以通过  设置index123::before&amp;#123;	z-index:-1&amp;#125; 设置transform123456#tar">
 <meta property="og:locale">
 <meta property="og:image" content="http://example.com/null">
-<meta property="article:published_time" content="2021-09-26T15:18:01.000Z">
-<meta property="article:modified_time" content="2021-11-11T05:45:50.761Z">
+<meta property="article:published_time" content="2021-12-15T08:51:48.000Z">
+<meta property="article:modified_time" content="2021-12-15T09:06:25.065Z">
 <meta property="article:author" content="FisherKai">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/null">
@@ -146,17 +146,17 @@
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">移动端软键盘弹起遮挡输入框问题的解决方案</h1>
+                <h1 class="kratos-entry-title text-center">CSS伪元素层级太高产生遮挡如何解决</h1>
             
             
             <ul class="kratos-post-meta text-center">
-                <li><i class="fa fa-calendar"></i> 2021-09-26</li>
+                <li><i class="fa fa-calendar"></i> 2021-12-15</li>
                 <li><i class="fa fa-user"></i> 作者 FisherKai</li>
                 <li>
                     <i class="fa fa-edit"></i> 
                     
                     
-                        ~2.22K
+                        304
                     
                     字
                 </li>
@@ -165,25 +165,23 @@
         </header>
         <div class="kratos-post-content">
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
-                本文最后编辑于 <time datetime="1636609550761"></time> 前，其中的内容可能需要更新。
+                本文最后编辑于 <time datetime="1639559185065"></time> 前，其中的内容可能需要更新。
             </div>
             
             <hr />
-            <hr>
-<p>title: 移动端软键盘弹起遮挡输入框问题的解决方案<br>date: 2021-09-26 23:15:11<br>tags:</p>
-<hr>
+            <p>​        最近在项目开发中遇到CSS伪元素产生遮挡的问题，总结一下如何解决的。</p>
+<ul>
+<li><p>产生场景</p>
+<p>  <img src="/2021/12/15/CSS%E4%BC%AA%E5%85%83%E7%B4%A0%E5%B1%82%E7%BA%A7%E5%A4%AA%E9%AB%98%E4%BA%A7%E7%94%9F%E9%81%AE%E6%8C%A1%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3/case.png" alt="case"></p>
+<p>  如图所示，背景为<strong>before</strong>伪元素生成，进度条用本身元素，通过控制宽度来改变进度。</p>
+<p>  灰色的层级（伪元素生成）会覆盖在彩色层级（本身元素）之上。</p>
+<p>  可以通过</p>
 <ol>
-<li>背景<br>原生app与H5页面混合开发时，input输入框唤起软键盘时，输入框被遮挡，分为两种情况：</li>
+<li>设置index<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">::before&#123;</span><br><span class="line">	z-index:-1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>设置transform<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#target&#123;</span><br><span class="line">	transform-style: preserve-3d;</span><br><span class="line">&#125;</span><br><span class="line">#target::before&#123;</span><br><span class="line">	transform:translateZ(-1px);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ol>
-<p>客户端设置了windowSoftInputMode =”adjustResize”属性，软键盘会将webview向上抬起，偶现input框被遮挡<br>客户端未设置windowSoftInputMode =”adjustResize”属性，软键盘在webview上方，不会将webview抬起，一直遮挡input的输入框<br>针对情况1的解决方案<br>当webview可以被抬起时，是可以监听到resize事件的，resize事件触发，判断input框是否在可视区内，在可视区内不做变动，否则计算距离后上移</p>
-<p>监听resize事件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">let originHeight = document.documentElement.clientHeight || document.body.clientHeight;</span><br><span class="line">window.addEventListener(&#x27;resize&#x27;,  () =&gt; &#123; // resize事件监听，webview高度是否发生变化</span><br><span class="line">     //加了0.3s延时，等到键盘完全弹起时在判断是否被遮挡</span><br><span class="line">    setTimeout(() =&gt;&#123;</span><br><span class="line">        this.solveCoverWays();</span><br><span class="line">    &#125;, 300)</span><br><span class="line">   </span><br><span class="line">    let resizeHeight = document.documentElement.clientHeight || document.body.clientHeight;</span><br><span class="line">    if (originHeight &lt; resizeHeight) &#123;</span><br><span class="line">        if(this.scrollTopHeightVal != 0) &#123;</span><br><span class="line">            // 触发滑动，键盘下移时，页面回滚</span><br><span class="line">            document.documentElement.scrollTop = -this.scrollTopHeightVal</span><br><span class="line">            this.scrollTopHeightVal = 0</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    originHeight = resizeHeight;</span><br><span class="line">&#125;, false)</span><br></pre></td></tr></table></figure>
-
-<p>2.是否被遮挡判断</p>
-<p><img src="/2021/09/26/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E8%BD%AF%E9%94%AE%E7%9B%98%E5%BC%B9%E8%B5%B7%E9%81%AE%E6%8C%A1%E8%BE%93%E5%85%A5%E6%A1%86%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/1.png" alt="示例"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">solveCoverWays() &#123;</span><br><span class="line">    // 获取input元素底部bottom及整体高度</span><br><span class="line">    let inputHeight = document.getElementById(&quot;inputHeight&quot;);</span><br><span class="line">    let inputInfo = window.getComputedStyle(inputHeight, null);</span><br><span class="line">    let inputInfoH = parseInt(inputInfo.height.replace(&#x27;px&#x27;,&#x27;&#x27;))</span><br><span class="line"></span><br><span class="line">    // 获取文档当前聚焦的元素</span><br><span class="line">    const &#123; activeElement &#125; = document;</span><br><span class="line">    if (![&#x27;INPUT&#x27;, &#x27;TEXTAREA&#x27;].includes(activeElement.tagName.toUpperCase())) return;</span><br><span class="line">    const rect = activeElement.getBoundingClientRect();</span><br><span class="line">    if (!rect) return;</span><br><span class="line"></span><br><span class="line">    // 设置初始滑动高度 ，聚焦元素到顶部的距离减去可视区的高度，如果大于0，就说明被遮挡住了，此时需要滚动到可视区内</span><br><span class="line">    let scrollHeight = 0</span><br><span class="line">    scrollHeight = rect.bottom  - (document.documentElement.clientHeight || document.body.clientHeight);</span><br><span class="line"></span><br><span class="line">    // 判断当前focus的input底部是否在document.body可视区域内</span><br><span class="line">      if (scrollHeight &gt; 0) &#123;</span><br><span class="line">   document.body.scrollTop = scrollHeight + inputInfoH;</span><br><span class="line">   document.documentElement.scrollTop = scrollHeight + inputInfoH;</span><br><span class="line">   this.scrollTopHeightVal = scrollHeight + inputInfoH;</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>注意：这里实现的前提是客户端设置了相关属性，可以监听到resize事件<br>针对情况2的解决方案<br>大致计算软键盘的高度，在input的聚焦时，手动将整体加个padding，失焦时去掉padding，但是键盘抬起时，页面滑动效果不好</p>
+</li>
+</ul>
 
         </div>
         
@@ -237,7 +235,7 @@
     <script type="text/javascript">
         $(()=>{
             new QRCode("wechat-qr", {
-                text: "http://example.com/2021/09/26/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E8%BD%AF%E9%94%AE%E7%9B%98%E5%BC%B9%E8%B5%B7%E9%81%AE%E6%8C%A1%E8%BE%93%E5%85%A5%E6%A1%86%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/",
+                text: "http://example.com/2021/12/15/CSS%E4%BC%AA%E5%85%83%E7%B4%A0%E5%B1%82%E7%BA%A7%E5%A4%AA%E9%AB%98%E4%BA%A7%E7%94%9F%E9%81%AE%E6%8C%A1%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3/",
                 width: 150,
                 height: 150,
                 correctLevel : QRCode.CorrectLevel.H
@@ -249,15 +247,14 @@
             const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
             const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
             const twitterBase   = "https://twitter.com/intent/tweet?";
-            const hostUrl       = "http://example.com/2021/09/26/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E8%BD%AF%E9%94%AE%E7%9B%98%E5%BC%B9%E8%B5%B7%E9%81%AE%E6%8C%A1%E8%BE%93%E5%85%A5%E6%A1%86%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/";
-            const title         = "「移动端软键盘弹起遮挡输入框问题的解决方案」";
-            const excerpt       = `
-title: 移动端软键盘弹起遮挡输入框问题的解决方案date: 2021-09-26 23:15:11tags:
+            const hostUrl       = "http://example.com/2021/12/15/CSS%E4%BC%AA%E5%85%83%E7%B4%A0%E5%B1%82%E7%BA%A7%E5%A4%AA%E9%AB%98%E4%BA%A7%E7%94%9F%E9%81%AE%E6%8C%A1%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3/";
+            const title         = "「CSS伪元素层级太高产生遮挡如何解决」";
+            const excerpt       = `​        最近在项目开发中遇到CSS伪元素产生遮挡的问题，总结一下如何解决的。
 
-
-背景原生app与H5页面混合开发时，input输入框唤起软键盘时，输入框被遮挡，分为两种情况：
-
-客户端设置了w...`;
+产生场景
+  
+  如图所示，背景为before伪元素生成，进度条用本身元素，通过控制宽度来改变进度。
+  灰色的层级（伪元素生成）会覆盖在彩色...`;
             let _URL;
             switch (dest) {
                 case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
@@ -279,7 +276,7 @@ title: 移动端软键盘弹起遮挡输入框问题的解决方案date: 2021-09
                     
                 </div>
                 <div class="pull-date">
-                <span>最后编辑：2021-11-11</span>
+                <span>最后编辑：2021-12-15</span>
                 </div>
             </div>
         </footer>
@@ -288,13 +285,9 @@ title: 移动端软键盘弹起遮挡输入框问题的解决方案date: 2021-09
         <nav class="navigation post-navigation clearfix" role="navigation">
             
             <div class="nav-previous clearfix">
-                <a title=" Tree shaking" href="/2021/08/23/Tree-shaking/">&lt; 上一篇</a>
+                <a title=" ElementUI上传多个图片列表问题" href="/2021/12/13/ElementUI上传多个图片列表问题/">&lt; 上一篇</a>
             </div>
             
-            
-            <div class="nav-next clearfix">
-                <a title=" 理解浏览器缓存机制" href="/2021/10/25/理解浏览器缓存机制/">下一篇 &gt;</a>
-            </div>
             
         </nav>
     
